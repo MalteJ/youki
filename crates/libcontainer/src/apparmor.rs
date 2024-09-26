@@ -21,6 +21,11 @@ const ENABLED_PARAMETER_PATH: &str = "/sys/module/apparmor/parameters/enabled";
 
 /// Checks if AppArmor has been enabled on the system.
 pub fn is_enabled() -> std::result::Result<bool, std::io::Error> {
+    println!("FOOOOOOBAR!");
+    if !Path::new(ENABLED_PARAMETER_PATH).exists() {
+        println!("returning apparmor false");
+        return Ok(false)
+    }
     let aa_enabled = fs::read_to_string(ENABLED_PARAMETER_PATH)?;
     Ok(aa_enabled.starts_with('Y'))
 }
