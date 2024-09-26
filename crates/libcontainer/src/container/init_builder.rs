@@ -139,6 +139,7 @@ impl InitContainerBuilder {
     }
 
     fn validate_spec(spec: &Spec) -> Result<(), LibcontainerError> {
+        println!("validate_spec()");
         let version = spec.version();
         if !version.starts_with("1.") {
             tracing::error!(
@@ -181,6 +182,7 @@ impl InitContainerBuilder {
 
         utils::validate_spec_for_new_user_ns(spec)?;
 
+        println!("spec successfully validated :)");
         Ok(())
     }
 
