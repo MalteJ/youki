@@ -128,7 +128,9 @@ impl InitContainerBuilder {
     fn load_spec(&self) -> Result<Spec, LibcontainerError> {
         let source_spec_path = self.bundle.join("config.json");
         let mut spec = Spec::load(source_spec_path)?;
+        println!("validating spec...");
         Self::validate_spec(&spec)?;
+        println!("validated spec! :)")
 
         spec.canonicalize_rootfs(&self.bundle).map_err(|err| {
             tracing::error!(bundle = ?self.bundle, "failed to canonicalize rootfs: {}", err);
@@ -148,7 +150,9 @@ impl InitContainerBuilder {
             Err(ErrInvalidSpec::UnsupportedVersion)?;
         }
 
+        println!("check process...");
         if let Some(process) = spec.process() {
+            println!("check apparmor...");
             if let Some(profile) = process.apparmor_profile() {
                 let apparmor_is_enabled = false;
                 if !apparmor_is_enabled {
@@ -158,6 +162,7 @@ impl InitContainerBuilder {
                 }
             }
 
+            println!("check io_priority...");
             if let Some(io_priority) = process.io_priority() {
                 let priority = io_priority.priority();
                 let iop_class_res = serde_json::to_string(&io_priority.class());
