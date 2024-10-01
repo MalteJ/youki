@@ -130,7 +130,7 @@ impl InitContainerBuilder {
         let mut spec = Spec::load(source_spec_path)?;
         println!("validating spec...");
         Self::validate_spec(&spec)?;
-        println!("validated spec! :)")
+        println!("validated spec! :)");
 
         spec.canonicalize_rootfs(&self.bundle).map_err(|err| {
             tracing::error!(bundle = ?self.bundle, "failed to canonicalize rootfs: {}", err);
