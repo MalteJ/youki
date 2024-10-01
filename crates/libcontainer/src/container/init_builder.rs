@@ -169,18 +169,21 @@ impl InitContainerBuilder {
                 match iop_class_res {
                     Ok(iop_class) => {
                         if !(0..=7).contains(&priority) {
+                            println!("Err(ErrInvalidSpec::IoPriority)?; #1");
                             tracing::error!(?priority, "io priority '{}' not between 0 and 7 (inclusive), class '{}' not in (IO_PRIO_CLASS_RT,IO_PRIO_CLASS_BE,IO_PRIO_CLASS_IDLE)",priority, iop_class);
                             Err(ErrInvalidSpec::IoPriority)?;
                         }
                     }
                     Err(e) => {
                         tracing::error!(?priority, ?e, "failed to parse io priority class");
+                        println!("Err(ErrInvalidSpec::IoPriority)?; #2");
                         Err(ErrInvalidSpec::IoPriority)?;
                     }
                 }
             }
         }
 
+        println!("utils::validate_spec_for_new_user_ns(spec)?;");
         utils::validate_spec_for_new_user_ns(spec)?;
 
         Ok(())
